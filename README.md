@@ -1,8 +1,8 @@
-# FER
+# FACIAL EXPRESSION RECOGNITION
 
 ![Alt text for your screenshot](https://recfaces.com/wp-content/uploads/2021/03/rf-emotion-recognition-rf-830x495-1.jpeg)
 
-
+FACIAL EXPRESSION RECOGNITION
 ## Table of Contents
 
 - [Installation](#installation)
