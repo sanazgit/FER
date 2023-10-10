@@ -377,7 +377,7 @@ class ResNet_Pose(nn.Module):
       out_al = self.fc(x_al_out)
 
 
-      return x_gl_fc1, x_gl_fc2, x_gl_fc3, x_al_fc1, x_al_fc2, x_al_fc3, out_gl, out_al
+      return x_gl_1, x_gl_2, x_gl_3, x_al_1, x_al_2, x_al_3, x_gl_fc1, x_gl_fc2, x_gl_fc3, x_al_fc1, x_al_fc2, x_al_fc3, out_gl, out_al
 
 
     def forward(self, x):
