@@ -161,7 +161,7 @@ class ResNet_Pose(nn.Module):
 
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(64*3*2, num_classes)
+        self.fc = nn.Linear(64*3, num_classes)
 
 
         for m in self.modules():
