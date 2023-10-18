@@ -246,7 +246,7 @@ class ResNet_Pose(nn.Module):
         
         
 
-    def _ap_module(self, x):
+    def _ssr_module(self, x):
       
         rang = self.rect_local[0][1] - self.rect_local[0][0]
         eye1 = x[:, :, 0:rang, 0:rang].clone()
@@ -272,31 +272,31 @@ class ResNet_Pose(nn.Module):
         x_fused = self.conv_reduce_channels(x_fused)
         x_fused = self.upsample(x_fused)
         
-        x_ap_1 = self.conv2_1(x_fused)
-        x_ap_2 = self.conv2_2(x_fused)
-        x_ap_3 = self.conv2_3(x_fused)
+        x_sr_1 = self.conv2_1(x_fused)
+        x_sr_2 = self.conv2_2(x_fused)
+        x_sr_3 = self.conv2_3(x_fused)
 
 
       # Apply avgpool to each tensor to reduce spatial dimensions to 1x1
-        x_ap_fc1 = self.avgpool(x_ap_1)     # Resultant shape: [batch_size, 64, 1, 1]
-        x_ap_fc2 = self.avgpool(x_ap_2)     # Resultant shape: [batch_size, 64, 1, 1]
-        x_ap_fc3 = self.avgpool(x_ap_3)     # Resultant shape: [batch_size, 64, 1, 1]
+        x_sr_fc1 = self.avgpool(x_sr_1)     # Resultant shape: [batch_size, 64, 1, 1]
+        x_sr_fc2 = self.avgpool(x_sr_2)     # Resultant shape: [batch_size, 64, 1, 1]
+        x_sr_fc3 = self.avgpool(x_sr_3)     # Resultant shape: [batch_size, 64, 1, 1]
 
 
       # Flatten each tensor to prepare for concatenation
-        x_ap_fc1 = torch.flatten(x_ap_fc1, 1)  # Resultant shape: [batch_size, 64]
-        x_ap_fc2 = torch.flatten(x_ap_fc2, 1)  # Resultant shape: [batch_size, 64]
-        x_ap_fc3 = torch.flatten(x_ap_fc3, 1)  # Resultant shape: [batch_size, 64]
+        x_sr_fc1 = torch.flatten(x_sr_fc1, 1)  # Resultant shape: [batch_size, 64]
+        x_sr_fc2 = torch.flatten(x_sr_fc2, 1)  # Resultant shape: [batch_size, 64]
+        x_sr_fc3 = torch.flatten(x_sr_fc3, 1)  # Resultant shape: [batch_size, 64]
 
-        x_ap_out = torch.cat([x_ap_1, x_ap_2], dim=1)
-        x_ap_out = torch.cat([x_ap_out, x_ap_3], dim=1)
+        x_sr_out = torch.cat([x_sr_1, x_sr_2], dim=1)
+        x_sr_out = torch.cat([x_sr_out, x_sr_3], dim=1)
 
-        x_ap_out = self.avgpool(x_ap_out)
-        x_ap_out = torch.flatten(x_ap_out, 1)
-        out_ap = self.fc(x_ap_out)
+        x_sr_out = self.avgpool(x_sr_out)
+        x_sr_out = torch.flatten(x_sr_out, 1)
+        out_sr = self.fc(x_sr_out)
 
 
-        return x_ap_1, x_ap_2, x_ap_3, x_ap_fc1, x_ap_fc2, x_ap_fc3, out_ap
+        return x_sr_1, x_sr_2, x_sr_3, x_sr_fc1, x_sr_fc2, x_sr_fc3, out_sr
     
     
     def _forward_impl(self, x):
@@ -315,9 +315,9 @@ class ResNet_Pose(nn.Module):
         x = self.layer2(x)  # 28x28x128
         
         x_gl_1, x_gl_2, x_gl_3,x_gl_fc1, x_gl_fc2, x_gl_fc3, out_gl = self._global_module(x)
-        x_ap_1, x_ap_2, x_ap_3, x_al_fc1, x_al_fc2, x_al_fc3, out_ap = self._ap_module(x)
+        x_sr_1, x_sr_2, x_sr_3, x_sr_fc1, x_sr_fc2, x_sr_fc3, out_sr = self._ssr_module(x)
 
-        return x_gl_1, x_gl_2, x_gl_3, x_ap_1, x_ap_2, x_ap_3, x_gl_fc1, x_gl_fc2, x_gl_fc3, x_al_fc1, x_al_fc2, x_al_fc3, out_gl, out_ap
+        return x_gl_1, x_gl_2, x_gl_3, x_sr_1, x_sr_2, x_sr_3, x_gl_fc1, x_gl_fc2, x_gl_fc3, x_sr_fc1, x_sr_fc2, x_sr_fc3, out_gl, out_sr
 
     def forward(self, x):
         return self._forward_impl(x)
