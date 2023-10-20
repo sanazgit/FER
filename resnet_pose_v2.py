@@ -327,7 +327,7 @@ class ResNet_Pose(nn.Module):
 
         out_fused= out_gl * out_sr
 
-        return  x_fused_1, x_fused_2, x_fused_3, fc_fused_1, fc_fused_2, fc_fused_3, out_fused, out_gl, out_sr
+        return  x_fused_1, x_fused_2, x_fused_3, fc_fused_1, fc_fused_2, fc_fused_3, out_fused
 
     def forward(self, x):
         return self._forward_impl(x)
