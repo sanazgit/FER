@@ -26,7 +26,7 @@ def init():
   parser.add_argument('--momentum', default=0.9, type=float, metavar='M')
   parser.add_argument('--wd', '--weight-decay', default=1e-4, type=float, metavar='W', dest='weight_decay')
   parser.add_argument('--resume', default=False, type=str, metavar='PATH', help='path to checkpoint')
-  parser.add_argument('--range', default=5, type=int, metavar='N', help='Intercept radius of AP-Module ')
+  parser.add_argument('--range', default=5, type=int, metavar='N', help='Intercept radius of SSR-Module ')
   parser.add_argument('--dataset', type=str, default='RAF')
   parser.add_argument('--evaluate_path', type=str, default='' + time_str + 'model.pth.tar')
   parser.add_argument('-e', '--evaluate', default=False, action='store_true', help='evaluate model on test set')
