@@ -15,7 +15,7 @@ def init():
   parser.add_argument('--best_checkpoint_path', type=str, default='/content/drive/MyDrive/Test_FER/checkpoint_cnn/RAFDB/' +time_str + 'model_best.pth.tar')
   parser.add_argument('--log_path', type=str, default='/content/drive/MyDrive/Test_FER/log/RAFDB/') #..save_path in ampnet
   parser.add_argument('-j', '--workers', default=2, type=int, metavar='N', help='number of data loading workers') #..num_workers in ampnet
-  parser.add_argument('--epochs', default=100, type=int, metavar='N', help='number of total epochs to run')
+  parser.add_argument('--epochs', default=80, type=int, metavar='N', help='number of total epochs to run')
   parser.add_argument('--start-epoch', default=0, type=int, metavar='N', help='manual epoch number (useful on restarts)')
   parser.add_argument('-b', '--batch-size', default=16, type=int, metavar='N')
   parser.add_argument('--lr', '--learning-rate', default=0.001, type=float, metavar='LR', dest='lr')
