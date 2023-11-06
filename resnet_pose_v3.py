@@ -156,11 +156,11 @@ class ResNet_Pose(nn.Module):
         self.conv2_2 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
         self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
 
-        self.layer1 = nn.Conv2d(in_channels=512, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer2 = nn.Conv2d(in_channels=512, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer3 = nn.Conv2d(in_channels=512, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer4 = nn.Conv2d(in_channels=512, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer5 = nn.Conv2d(in_channels=512, out_channels=64, kernel_size=1, stride=1, padding=0)
+        self.layer1 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
+        self.layer2 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
+        self.layer3 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
+        self.layer4 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
+        self.layer5 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(64*3, num_classes)
