@@ -238,6 +238,8 @@ class ResNet_Pose(nn.Module):
         x_gl_out = torch.cat([x_gl_1, x_gl_2], dim=1)
         x_gl_out = torch.cat([x_gl_out, x_gl_3], dim=1)
 
+        print('x_gl_out: ', x_gl_out.shape)
+
         x_gl_out = self.avgpool(x_gl_out)
         x_gl_out = torch.flatten(x_gl_out, 1)
         out_gl = self.fc(x_gl_out)
@@ -297,6 +299,8 @@ class ResNet_Pose(nn.Module):
         sr_out = torch.cat([x_sr_out, mouth2_out_fc], dim=1)
         
         #sr_out= torch.cat([eye1_out_fc, eye2_out_fc, eye_midd_out_fc, mouth1_out_fc, mouth2_out_fc], dim=1)
+
+        print('sr_out: ', sr_out.shape)
 
         sr_out = self.avgpool(sr_out)
         sr_out = torch.flatten(sr_out, 1)
