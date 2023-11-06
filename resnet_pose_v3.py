@@ -269,14 +269,6 @@ class ResNet_Pose(nn.Module):
                         self.rect_local[i][16]:self.rect_local[i][17]]
 
   
-        # Apply the expansion layer to each region
-        eye1 = self.expansion_layer(eye1)
-        eye2 = self.expansion_layer(eye2)
-        eye_midd = self.expansion_layer(eye_midd)
-        mouth1 = self.expansion_layer(mouth1)
-        mouth2 = self.expansion_layer(mouth2)
-
-
         # Concatenate along the channel axis (dimension 1)
         combined_features = torch.cat((eye1, eye2, eye_midd, mouth1, mouth2), dim=1)
         print(combined_features.shape)
