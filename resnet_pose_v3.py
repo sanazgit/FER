@@ -156,10 +156,10 @@ class ResNet_Pose(nn.Module):
         self.conv2_2 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
         self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
 
-        # Define the expansion layer
-        self.expansion_layer = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=1, stride=1, padding=0)     
-        self.fc_to_match = nn.Linear(10240, 192 * 7 * 7)
-
+        self.expansion_conv = nn.Conv2d(in_channels=512 * 5, out_channels=2048, kernel_size=1)
+        self.adaptive_pool = nn.AdaptiveAvgPool2d((7, 7))
+        self.fc_2 = nn.Linear( 512 * 4, 192)             
+       
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(64*3, num_classes)
@@ -275,40 +275,26 @@ class ResNet_Pose(nn.Module):
         eye_midd = self.expansion_layer(eye_midd)
         mouth1 = self.expansion_layer(mouth1)
         mouth2 = self.expansion_layer(mouth2)
-        
-
-      # Apply avgpool to each tensor to reduce spatial dimensions to 1x1
-        eye1_out_fc = self.avgpool(eye1)
-        eye1_out_fc = torch.flatten(eye1_out_fc, 1)
-
-        eye2_out_fc = self.avgpool(eye2) 
-        eye2_out_fc = torch.flatten(eye2_out_fc, 1)
-
-        eye_midd_out_fc = self.avgpool(eye_midd) 
-        eye_midd_out_fc = torch.flatten(eye_midd_out_fc, 1)
-
-        mouth1_out_fc = self.avgpool(mouth1)
-        mouth1_out_fc = torch.flatten(mouth1_out_fc, 1)
-      
-        mouth2_out_fc = self.avgpool(mouth2)
-        mouth2_out_fc = torch.flatten(mouth2_out_fc, 1)
-        
-        x_sr_out = torch.cat([eye1_out_fc, eye2_out_fc], dim=1)
-        x_sr_out = torch.cat([x_sr_out, eye_midd_out_fc], dim=1)
-        x_sr_out = torch.cat([x_sr_out, mouth1_out_fc], dim=1)
-        sr_out = torch.cat([x_sr_out, mouth2_out_fc], dim=1)
-        
-        #sr_out= torch.cat([eye1_out_fc, eye2_out_fc, eye_midd_out_fc, mouth1_out_fc, mouth2_out_fc], dim=1)
 
 
-        # FC layer to match the dimensions
-        x_sr_out_matched = self.fc_to_match(x_sr_out)
+        # Concatenate along the channel axis (dimension 1)
+        combined_features = torch.cat((eye1, eye2, eye_midd, mouth1, mouth2), dim=1)
+        print(combined_features.shape)
 
-        # Reshape to match the global features [batch, channels, height, width]
-        x_sr_out_reshaped = x_sr_out_matched.view(-1, 192, 7, 7)
+        expanded_features = self.expansion_conv(combined_features)
+        print(expanded_features.shape)
 
-        sr_out = self.avgpool(sr_out)
-        sr_out = torch.flatten(sr_out, 1)
+        # Apply adaptive average pooling to reduce spatial dimensions
+        output_features = self.adaptive_pool(expanded_features)
+
+        print(output_features.shape)
+
+        output_features = torch.flatten(output_features, 1)
+        print(output_features.shape)
+
+        sr_out= self.fc_2(output_features)
+        print(out_sr.shape)
+    
         out_sr = self.fc(sr_out)
 
 
