@@ -291,13 +291,13 @@ class ResNet_Pose(nn.Module):
         mouth2_out_fc = self.avgpool(mouth2)
         mouth2_out_fc = torch.flatten(mouth2_out_fc, 1)
         
-        # x_sr_out = torch.cat([eye1_out_fc, eye2_out_fc], dim=1)
-        # x_sr_out = torch.cat([x_sr_out, eye_midd_out_fc], dim=1)
-        # x_sr_out = torch.cat([x_sr_out, mouth1_out_fc], dim=1)
-        # sr_out = torch.cat([x_sr_out, mouth2_out_fc], dim=1)
+        x_sr_out = torch.cat([eye1_out_fc, eye2_out_fc], dim=1)
+        x_sr_out = torch.cat([x_sr_out, eye_midd_out_fc], dim=1)
+        x_sr_out = torch.cat([x_sr_out, mouth1_out_fc], dim=1)
+        sr_out = torch.cat([x_sr_out, mouth2_out_fc], dim=1)
         
-        sr_out= torch.cat([eye1_out_fc, eye2_out_fc, eye_midd_out_fc, mouth1_out_fc, mouth2_out_fc], dim=1)
-        
+        #sr_out= torch.cat([eye1_out_fc, eye2_out_fc, eye_midd_out_fc, mouth1_out_fc, mouth2_out_fc], dim=1)
+
         sr_out = self.avgpool(sr_out)
         sr_out = torch.flatten(sr_out, 1)
         out_sr = self.fc(sr_out)
