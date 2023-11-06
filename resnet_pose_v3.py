@@ -157,7 +157,7 @@ class ResNet_Pose(nn.Module):
         self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
 
         # Define the expansion layer
-        expansion_layer = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=1, stride=1, padding=0)             
+        self.expansion_layer = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=1, stride=1, padding=0)             
 
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
@@ -268,11 +268,11 @@ class ResNet_Pose(nn.Module):
 
   
         # Apply the expansion layer to each region
-        eye1 = expansion_layer(eye1)
-        eye2 = expansion_layer(eye2)
-        eye_midd = expansion_layer(eye_midd)
-        mouth1 = expansion_layer(mouth1)
-        mouth2 = expansion_layer(mouth2)
+        eye1 = self.expansion_layer(eye1)
+        eye2 = self.expansion_layer(eye2)
+        eye_midd = self.expansion_layer(eye_midd)
+        mouth1 = self.expansion_layer(mouth1)
+        mouth2 = self.expansion_layer(mouth2)
         
 
       # Apply avgpool to each tensor to reduce spatial dimensions to 1x1
