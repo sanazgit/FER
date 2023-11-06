@@ -156,11 +156,9 @@ class ResNet_Pose(nn.Module):
         self.conv2_2 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
         self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
 
-        self.layer1 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer2 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer3 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer4 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
-        self.layer5 = nn.Conv2d(in_channels=64, out_channels=64, kernel_size=1, stride=1, padding=0)
+        # Define the expansion layer
+        expansion_layer = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=1, stride=1, padding=0)             
+
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(64*3, num_classes)
@@ -269,14 +267,13 @@ class ResNet_Pose(nn.Module):
                         self.rect_local[i][16]:self.rect_local[i][17]]
 
   
-        x_sr_1 = self.layer1(eye1)
-        print(x_sr_1.shape)
-        x_sr_2 = self.layer2(eye2)
-        x_sr_3 = self.layer3(eye_midd)
-        x_sr_4 = self.layer5(mouth1)
-        x_sr_5 = self.layer5(mouth2)
+        # Apply the expansion layer to each region
+        eye1 = expansion_layer(eye1)
+        eye2 = expansion_layer(eye2)
+        eye_midd = expansion_layer(eye_midd)
+        mouth1 = expansion_layer(mouth1)
+        mouth2 = expansion_layer(mouth2)
         
-
 
       # Apply avgpool to each tensor to reduce spatial dimensions to 1x1
         x_sr_fc1 = self.avgpool(x_sr_1)      
