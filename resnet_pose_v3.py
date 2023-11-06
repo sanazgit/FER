@@ -157,7 +157,8 @@ class ResNet_Pose(nn.Module):
         self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
 
         # Define the expansion layer
-        self.expansion_layer = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=1, stride=1, padding=0)             
+        self.expansion_layer = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=1, stride=1, padding=0)     
+        self.fc_to_match = nn.Linear(10240, 192 * 7 * 7)
 
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
@@ -238,7 +239,6 @@ class ResNet_Pose(nn.Module):
         x_gl_out = torch.cat([x_gl_1, x_gl_2], dim=1)
         x_gl_out = torch.cat([x_gl_out, x_gl_3], dim=1)
 
-        print('x_gl_out: ', x_gl_out.shape)
 
         x_gl_out = self.avgpool(x_gl_out)
         x_gl_out = torch.flatten(x_gl_out, 1)
@@ -300,7 +300,12 @@ class ResNet_Pose(nn.Module):
         
         #sr_out= torch.cat([eye1_out_fc, eye2_out_fc, eye_midd_out_fc, mouth1_out_fc, mouth2_out_fc], dim=1)
 
-        print('sr_out: ', sr_out.shape)
+
+        # FC layer to match the dimensions
+        x_sr_out_matched = self.fc_to_match(x_sr_out)
+
+        # Reshape to match the global features [batch, channels, height, width]
+        x_sr_out_reshaped = x_sr_out_matched.view(-1, 192, 7, 7)
 
         sr_out = self.avgpool(sr_out)
         sr_out = torch.flatten(sr_out, 1)
