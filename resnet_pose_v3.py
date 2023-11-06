@@ -268,7 +268,8 @@ class ResNet_Pose(nn.Module):
                         self.rect_local[i][16]:self.rect_local[i][17]]
 
 
-        
+        print(eye1.shape)
+        print(mouth1.shape)
         
         x_sr_1 = self.conv2_1(eye1)
         x_sr_2 = self.conv2_2(eye2)
