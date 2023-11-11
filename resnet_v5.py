@@ -159,12 +159,12 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2,
                                        dilate=replace_stride_with_dilation[2])
         # 分成三组
-        self.conv2_1 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
-        self.conv2_2 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
-        self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
-        # self.conv2_1 = nn.Conv2d(512 * block.expansion, 256, kernel_size=1)
-        # self.conv2_2 = nn.Conv2d(512 * block.expansion, 256, kernel_size=1)
-        # self.conv2_3 = nn.Conv2d(512 * block.expansion, 256, kernel_size=1)
+        # self.conv2_1 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
+        # self.conv2_2 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
+        # self.conv2_3 = nn.Conv2d(512 * block.expansion, 64, kernel_size=1)
+        self.conv2_1 = nn.Conv2d(512 * block.expansion, 256, kernel_size=1)
+        self.conv2_2 = nn.Conv2d(512 * block.expansion, 256, kernel_size=1)
+        self.conv2_3 = nn.Conv2d(512 * block.expansion, 256, kernel_size=1)
         # self.bn2_3 = norm_layer(64)
         # self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         # self.avg_pool_2 = nn.AdaptiveAvgPool2d((1, 1))
