@@ -318,7 +318,7 @@ class ResNet_Pose(nn.Module):
             mouth2[i] = x[i][:, self.rect_local[i][18]:self.rect_local[i][19],
                         self.rect_local[i][16]:self.rect_local[i][17]]
          
-
+        print(eye1.shape)
         eye1_out= self.ap_layer(eye1)
         eye2_out= self.ap_layer(eye2)
         eye_midd_out= self.ap_layer(eye_midd)
