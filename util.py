@@ -397,20 +397,44 @@ def adjust_learning_rate(optimizer, epoch, args):
     return lr
 
 
+# def accuracy(output, target, topk=(1,)):
+#     """Computes the accuracy over the k top predictions for the specified values of k"""
+#     with torch.no_grad():
+#         maxk = max(topk)
+#         batch_size = target.size(0)
+#         _, pred = output.topk(maxk, 1, True, True)
+#         pred = pred.t()
+#         correct = pred.eq(target.view(1, -1).expand_as(pred))
+#         res = []
+#         for k in topk:
+#             # .contiguous
+#             correct_k = correct[:k].contiguous().view(-1).float().sum(0, keepdim=True)
+#             res.append(correct_k.mul_(100.0 / batch_size))
+#         return res       
+
 def accuracy(output, target, topk=(1,)):
-    """Computes the accuracy over the k top predictions for the specified values of k"""
+    """Computes the accuracy over the k top predictions for the specified values of k for one-hot encoded targets"""
     with torch.no_grad():
         maxk = max(topk)
         batch_size = target.size(0)
+
+        # Get the predicted class index
         _, pred = output.topk(maxk, 1, True, True)
         pred = pred.t()
-        correct = pred.eq(target.view(1, -1).expand_as(pred))
+
+        # Change target to be the same format as pred
+        _, target_class = target.max(dim=1)
+        target_class = target_class.view(1, -1).expand_as(pred)
+
+        # Compare predicted and target classes
+        correct = pred.eq(target_class)
+
         res = []
         for k in topk:
-            # .contiguous
-            correct_k = correct[:k].contiguous().view(-1).float().sum(0, keepdim=True)
+            correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
             res.append(correct_k.mul_(100.0 / batch_size))
-        return res        
+        return res
+
         
 class RecorderMeter(object):
     """Computes and stores the minimum loss value and its epoch index"""
