@@ -84,36 +84,6 @@ class ConfusionMatrixCallback(tf.keras.callbacks.Callback):
             plt.close(fig)  # Close the figure to free
 
 
-# load orthogonal features
-
-train_1=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/train_gf_1_RAFDB2_v2.npy',encoding = "latin1")
-train_2=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/train_gf_2_RAFDB2_v2.npy',encoding = "latin1")
-train_3=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/train_gf_3_RAFDB2_v2.npy',encoding = "latin1")
-train_label=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/train_label_RAFDB2_v2.npy',encoding = "latin1")
-test_1=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/test_gf_1_RAFDB2_v2.npy',encoding = "latin1")
-test_2=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/test_gf_2_RAFDB2_v2.npy',encoding = "latin1")
-test_3=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/test_gf_3_RAFDB2_v2.npy',encoding = "latin1")
-test_label=np.load('/kaggle/input/la-qvit-numpyorth0-1/Orthognal_npy/test_label_RAFDB2_v2.npy',encoding = "latin1")
-     
-     
-# average the three sub-features and put them into a quaternion matrix
-q_train=np.zeros([train_1.shape[0],train_1.shape[1],train_1.shape[2],train_1.shape[-1]*4])
-train_r=(train_1+train_2+train_3)/3
-q_train[:,:,:,:train_1.shape[-1]]=train_r
-q_train[:,:,:,train_1.shape[-1]:2*train_1.shape[-1]]=train_1
-q_train[:,:,:,2*train_1.shape[-1]:3*train_1.shape[-1]]=train_2
-q_train[:,:,:,3*train_1.shape[-1]:]=train_3
-train = np.transpose(q_train,(0,3,1,2))
-train = np.reshape(train,(train_1.shape[0],128*4,49))  # 64 --> 128
-
-q_test=np.zeros([test_1.shape[0],test_1.shape[1],test_1.shape[2],test_1.shape[-1]*4])
-test_r=(test_1+test_2+test_3)/3
-q_test[:,:,:,:test_1.shape[-1]]=test_r
-q_test[:,:,:,test_1.shape[-1]:2*test_1.shape[-1]]=test_1
-q_test[:,:,:,2*test_1.shape[-1]:3*test_1.shape[-1]]=test_2
-q_test[:,:,:,3*test_1.shape[-1]:]=test_3
-test = np.transpose(q_test,(0,3,1,2))
-test = np.reshape(test,(test_1.shape[0],128*4,49)) # 64 --> 128
 
 input_shape = (128*4, 49) # 64 --> 128
 num_classes = 7
