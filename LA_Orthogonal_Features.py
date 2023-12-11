@@ -1,7 +1,6 @@
 import itertools
 import numpy as np
 import torch
-from torchsummary import summary
 import random
 import time
 from torchvision import datasets, transforms
