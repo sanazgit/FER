@@ -344,8 +344,52 @@ class myImageFloder1(datasets.ImageFolder):
 
     def getName(self):
         return self.classes
-        
 
+#################################
+class myImageFloder2(datasets.ImageFolder):  # Class inheritance
+    def __init__(self, root, label, transform=None, target_transform=None, loader=default_loader):
+         # fh = open(label)
+        c = 0
+        imgs = []
+        class_names = ["hap", "sad", "neu", "ang", "sur", "dis", "fea"]
+        for line in label:  # label is a list
+            cls = line.split()  # cls is a lis
+            fn = cls.pop(0)
+            la=int(cls[0])
+            if os.path.isfile(os.path.join(root, fn)):
+                #imgs.append((fn, tuple([float(v) for v in cls[:len(cls)]])))
+                imgs.append((fn, la))
+                # access the last label
+                # images is the list,and the content is the tuple, every image corresponds to a label
+                # despite the label's dimension
+                # we can use the append way to append the element for list
+            c = c + 1
+        print('the total image is',c)
+        print(class_names)
+        self.root = root
+        self.imgs = imgs
+        self.classes = class_names
+        self.transform = transform
+        self.target_transform = target_transform
+        self.loader = loader
+
+    def __getitem__(self, index):
+
+        fn, label = self.imgs[index]  # even though the imgs is just a list, it can return the elements of it
+        # in a proper way
+        img = self.loader(os.path.join(self.root, fn))
+        if self.transform is not None:
+            img = self.transform(img)
+        return img, torch.tensor(label), fn
+
+
+    def __len__(self):
+        return len(self.imgs)
+
+    def getName(self):
+        return self.classes
+        
+############################
 class AverageMeter(object):
     """Computes and stores the average and current value"""
     def __init__(self, name, fmt=':f'):
