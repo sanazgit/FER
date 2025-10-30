@@ -81,8 +81,8 @@ Run FER-Inference.ipynb
 ## License & Attribution
 
 * Face detection by **RetinaFace** (see its license).
-* Trained FER classifier: your checkpoint(s) and training code.
-* This inference pipeline includes concepts commonly used in FER research (alignment, calibration, smoothing). Adapt thresholds and priors to your data.
+
+* This inference pipeline includes concepts commonly used in FER research (alignment, calibration, smoothing). Adapt thresholds and priors to RAF data.
 
 ---
 
@@ -97,7 +97,7 @@ Also, thanks to RAF‑DB and open‑source contributors of RetinaFace, PyTorch, 
 
 ---
 
-## Roadmap (optional)
+## Roadmap
 
 * Adaptive bias correction from confusion matrices
 * Async/threaded capture + inference queue
