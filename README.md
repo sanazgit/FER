@@ -69,6 +69,32 @@ Run FER-Inference.ipynb
 
 ---
 
+## Desktop GUI
+
+An interactive PySide6 desktop application is available in `gui/` for rapid experimentation.
+
+1. Install the optional dependencies:
+
+   ```bash
+   pip install PySide6 opencv-python
+   ```
+
+2. Launch the interface:
+
+   ```bash
+   python -m gui.main
+   ```
+
+3. Use the sidebar to open still images, video files, or start the webcam. Load a trained
+   PyTorch checkpoint to replace the built-in demo classifier.
+
+The GUI ships with a colourful Aurora-inspired theme, real-time statistics cards (top expression,
+FPS, faces detected), a probability table, and an event log to trace pipeline actions. Without a
+custom model the interface uses a light-weight dummy classifier so you can explore the layout
+before wiring your actual weights.
+
+---
+
 ## Troubleshooting
 
 * **Everything becomes `happy`**: missing alignment; wrong priors; T too low; thresholds too low for `happy`.
